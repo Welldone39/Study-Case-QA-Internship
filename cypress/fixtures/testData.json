@@ -1,0 +1,13 @@
+{
+  "validUser": {
+    "username": "Welldone2003",
+    "password": "Wildan#2003"
+  },
+  "movies": {
+    "fromListing": "Demon Slayer: Kimetsu no Yaiba Infinity Castle",
+    "fromDetail": "SHELTER",
+    "forDuplicate": "Avatar",
+    "withoutLogin": "The Bluff",
+    "forFavoriteList": "Mercy"
+  }
+}
