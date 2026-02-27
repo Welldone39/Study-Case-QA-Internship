@@ -18,6 +18,25 @@ Project automation testing untuk fitur **Mark as Favorite** pada website [TMDb (
 
 ---
 
+##  User Story dan Acceptance Criteria
+
+### 1. Ubah Bahasa
+
+***User Story:***  
+Sebagai user, saya ingin dapat mengubah bahasa aplikasi agar saya dapat menggunakan aplikasi sesuai dengan preferensi bahasa saya.
+
+***Acceptance Criteria:***
+- User dapat mengubah bahasa antara English dan Bahasa Indonesia
+- UI mengikuti bahasa yang dipilih
+- Perubahan bahasa berlaku langsung tanpa logout
+- Data favorite user tetap tersedia setelah perubahan bahasa
+
+---
+
+
+
+---
+
 ## 🛠️ Tech Stack
 
 - **Framework**: [Cypress](https://www.cypress.io/) v13.x
