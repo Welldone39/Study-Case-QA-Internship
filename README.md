@@ -53,11 +53,11 @@ Simpan sorting preference di user settings/database agar persist antar sesi, buk
 
 ### Untuk Developer
 1. **Sorting Persistence** — Sorting preference seharusnya disimpan di server/database per user, bukan hanya di browser session. Saat ini preference hilang setelah logout (TC-FAV-021 FAIL).
-2. **Konfirmasi Unfavorite** — Tidak ada konfirmasi dialog saat user menghapus movie dari favorite. Mudah terjadi unintentional removal.
-3. **Real-time Update** — Setelah unfavorite dari detail page, perlu refresh manual untuk melihat perubahan di favorite list.
+2. **Ketersediaan Favorite Movie** — Untuk Melakukan Favorite Movie lebih bagus di tampilkan disetiap card di halaman utama website
+3. **Pemberitahuan disesuaikan dengan bahasa yang digunakan** — peringatan tidak konsisten dan adanya 2 bahasa yang tercampur dalam satu peringatan
 
 ### Untuk UI/UX
-1. **Empty State** — Empty state pada favorite list sudah ada tapi kurang informatif. Bisa ditambahkan CTA (Call to Action) seperti "Jelajahi Movie Sekarang".
+1. **Perubahan bahasa tidak konsisten** — Ketika merubah bahasa, memang berubah dari segi UI namun tidak semua kata atau kalimat berubah atau ada yang menggunakan bahasa default yaitu bahasa inggris
 2. **Indikator Favorit** — Di halaman popular movies, indikator aktif/tidak aktif pada ikon favorite sudah cukup jelas, namun warnanya kurang kontras di mode gelap.
 3. **Navigasi Favorite** — Alur hover → Overview → Favorites → Movies cukup panjang. Pertimbangkan shortcut di navbar untuk akses lebih cepat.
 

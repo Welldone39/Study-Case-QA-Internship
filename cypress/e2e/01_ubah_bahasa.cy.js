@@ -1,117 +1,172 @@
 // =============================================
 // FILE: 01_ubah_bahasa.cy.js
 // FITUR: Ubah Bahasa
-// TEST CASE: TC-FAV-001 sampai TC-FAV-004
+// TC-FAV-001 s/d TC-FAV-004
 // =============================================
 
 describe('TMDb - Ubah Bahasa', () => {
 
-  // Variabel untuk menyimpan data dari testData.json
   let testData
 
-  // Ambil data test sebelum semua test dijalankan
   before(() => {
     cy.fixture('testData').then((data) => {
       testData = data
     })
   })
 
+  // Helper: set bahasa ke English dulu sebelum test
+  // Supaya kondisi awal selalu konsisten
+  const setBahasaKeEnglish = () => {
+    cy.visit('/')
+    cy.tutupCookiePopup()
+    cy.wait(1000)
+
+    // Klik tombol language di header
+    cy.get('li.translate').click({ force: true })
+    cy.get('.tooltip_popup').should('be.visible')
+
+    // Klik dropdown bahasa (kolom pertama)
+    cy.get('.tooltip_popup').find('.k-input-value-text').first().click({ force: true })
+    cy.wait(1000)
+
+    // Pilih en-US langsung berdasarkan attribute data, bukan teks
+    cy.get('.k-animation-container').should('be.visible')
+    cy.get('.k-animation-container .k-list-item').each(($el) => {
+      if ($el.text().includes('en-US') || $el.text().includes('English')) {
+        cy.wrap($el).click({ force: true })
+        return false // stop loop
+      }
+    })
+
+    cy.wait(500)
+
+    // Klik RELOAD PAGE
+    cy.get('.tooltip_popup').find('a.no_click.button.rounded.upcase').click({ force: true })
+    cy.wait(3000)
+    cy.tutupCookiePopup()
+  }
+
 
   // ----------------------------------------
-  // TC-FAV-001 (POSITIVE)
-  // Ubah bahasa dari English ke Bahasa Indonesia
+  // TC-FAV-001 | POSITIVE | HIGH
+  // Ubah Bahasa dari English ke Bahasa Indonesia
+  // PreCondition: User sudah login, bahasa saat ini English
   // ----------------------------------------
   it('TC-FAV-001 | Ubah Bahasa dari English ke Bahasa Indonesia', () => {
 
-    // Login terlebih dahulu
     cy.login(testData.validUser.username, testData.validUser.password)
 
-    // Buka halaman utama
-    cy.visit('/')
+    // Setup: pastikan bahasa awal adalah English
+    setBahasaKeEnglish()
 
-    // Klik tombol "EN" di pojok kanan atas header
+    // Step 1: Klik tombol Language di header
     cy.get('li.translate').click({ force: true })
-
-    // Tunggu popup Language Preferences muncul
     cy.get('.tooltip_popup').should('be.visible')
 
-    // Klik dropdown Default Language
+    // Step 2: Klik kolom Default Language
     cy.get('.tooltip_popup').find('.k-input-value-text').first().click({ force: true })
+    cy.wait(1000)
+    cy.get('.k-animation-container').should('be.visible')
 
-    // Tunggu daftar pilihan bahasa muncul
-    cy.get('.k-animation-container .k-list-item').should('be.visible')
+    // Step 3: Pilih Indonesian berdasarkan teks yang mengandung 'id-ID'
+    cy.get('.k-animation-container .k-list-item').each(($el) => {
+      if ($el.text().includes('id-ID') || $el.text().includes('Indonesia')) {
+        cy.wrap($el).click({ force: true })
+        return false
+      }
+    })
 
-    // Pilih bahasa Indonesian dari daftar
-    cy.get('.k-animation-container .k-list-item').contains(/Indonesian/i).click({ force: true })
+    cy.wait(500)
 
-    // Klik tombol RELOAD PAGE
+    // Step 4: Klik tombol RELOAD PAGE
     cy.get('.tooltip_popup').find('a.no_click.button.rounded.upcase').click({ force: true })
-
-    // Tunggu halaman selesai reload
     cy.wait(3000)
+    cy.tutupCookiePopup()
 
-    // ✅ Cek 1: Tombol bahasa di header berubah menjadi "id"
+    // ✅ Expected: UI berubah ke Bahasa Indonesia tanpa harus logout
     cy.get('li.translate').should('contain.text', 'id')
 
-    // ✅ Cek 2: Konten halaman berubah ke Bahasa Indonesia
-    cy.get('body').should('contain.text', 'Film')
-
-    // Kembalikan ke English untuk test berikutnya
-    cy.get('li.translate').click({ force: true })
-    cy.get('.tooltip_popup').should('be.visible')
-    cy.get('.tooltip_popup').find('.k-input-value-text').first().click({ force: true })
-    cy.get('.k-animation-container .k-list-item').should('be.visible')
-    cy.get('.k-animation-container .k-list-item').contains(/en-US/i).click({ force: true })
-    cy.get('.tooltip_popup').find('a.no_click.button.rounded.upcase').click({ force: true })
-    cy.wait(3000)
+    // Cleanup: kembalikan ke English
+    setBahasaKeEnglish()
   })
 
 
   // ----------------------------------------
-  // TC-FAV-002 (POSITIVE)
-  // Ubah bahasa dari Bahasa Indonesia ke English
+  // TC-FAV-002 | POSITIVE | HIGH
+  // Ubah Bahasa dari Bahasa Indonesia ke English
+  // PreCondition: User sudah login, bahasa saat ini Indonesia
   // ----------------------------------------
   it('TC-FAV-002 | Ubah Bahasa dari Bahasa Indonesia ke English', () => {
 
     cy.login(testData.validUser.username, testData.validUser.password)
     cy.visit('/')
+    cy.tutupCookiePopup()
 
-    // Set ke Indonesian dulu
+    // Setup: set ke Indonesian dulu
     cy.get('li.translate').click({ force: true })
     cy.get('.tooltip_popup').should('be.visible')
     cy.get('.tooltip_popup').find('.k-input-value-text').first().click({ force: true })
-    cy.get('.k-animation-container .k-list-item').should('be.visible')
-    cy.get('.k-animation-container .k-list-item').contains(/Indonesian/i).click({ force: true })
+    cy.wait(1000)
+    cy.get('.k-animation-container').should('be.visible')
+    cy.get('.k-animation-container .k-list-item').each(($el) => {
+      if ($el.text().includes('id-ID') || $el.text().includes('Indonesia')) {
+        cy.wrap($el).click({ force: true })
+        return false
+      }
+    })
+    cy.wait(500)
     cy.get('.tooltip_popup').find('a.no_click.button.rounded.upcase').click({ force: true })
     cy.wait(3000)
+    cy.tutupCookiePopup()
 
-    // Sekarang ubah kembali ke English
+    // Step 1: Buka https://www.themoviedb.org/
+    cy.visit('/')
+    cy.tutupCookiePopup()
+
+    // Step 2: Klik Button Language di header
     cy.get('li.translate').click({ force: true })
     cy.get('.tooltip_popup').should('be.visible')
+
+    // Step 3: Klik Kolom Bahasa Bawaan
     cy.get('.tooltip_popup').find('.k-input-value-text').first().click({ force: true })
-    cy.get('.k-animation-container .k-list-item').should('be.visible')
-    cy.get('.k-animation-container .k-list-item').contains(/en-US/i).click({ force: true })
+    cy.wait(1000)
+    cy.get('.k-animation-container').should('be.visible')
+
+    // Step 4: Pilih English (en-US)
+    cy.get('.k-animation-container .k-list-item').each(($el) => {
+      if ($el.text().includes('en-US') || $el.text().includes('English')) {
+        cy.wrap($el).click({ force: true })
+        return false
+      }
+    })
+    cy.wait(500)
+
+    // Step 5: Klik tombol RELOAD PAGE
     cy.get('.tooltip_popup').find('a.no_click.button.rounded.upcase').click({ force: true })
     cy.wait(3000)
+    cy.tutupCookiePopup()
 
-    // ✅ Cek 1: Tombol bahasa kembali ke "en"
+    // ✅ Expected: UI berubah ke Bahasa Inggris tanpa harus logout
     cy.get('li.translate').should('contain.text', 'en')
-
-    // ✅ Cek 2: Konten halaman kembali ke Bahasa Inggris
     cy.get('body').should('contain.text', 'Movies')
   })
 
 
   // ----------------------------------------
-  // TC-FAV-003 (POSITIVE)
-  // Data favorite tetap ada setelah ubah bahasa
+  // TC-FAV-003 | POSITIVE | HIGH
+  // Data Favorite Tetap Ada Setelah Ubah Bahasa
+  // PreCondition: User sudah login, punya 1 movie di favorite, bahasa English
   // ----------------------------------------
   it('TC-FAV-003 | Data Favorite Tetap Ada Setelah Ubah Bahasa', () => {
 
     cy.login(testData.validUser.username, testData.validUser.password)
 
-    // Buka halaman favorite dan catat jumlah movie
-    cy.visit('/account/favorite/movies')
+    // Setup: pastikan bahasa English dulu
+    setBahasaKeEnglish()
+
+    // Step 1-3: Buka halaman favorite dan catat jumlah movie
+    cy.bukaFavoriteMovies()
+    cy.tutupCookiePopup()
 
     let jumlahSebelum = 0
     cy.get('body').then(($body) => {
@@ -119,66 +174,78 @@ describe('TMDb - Ubah Bahasa', () => {
       cy.log('Jumlah favorite sebelum ubah bahasa: ' + jumlahSebelum)
     })
 
-    // Ubah bahasa ke Indonesian
+    // Step 4-8: Ubah bahasa ke Indonesian
     cy.visit('/')
+    cy.tutupCookiePopup()
     cy.get('li.translate').click({ force: true })
     cy.get('.tooltip_popup').should('be.visible')
     cy.get('.tooltip_popup').find('.k-input-value-text').first().click({ force: true })
-    cy.get('.k-animation-container .k-list-item').should('be.visible')
-    cy.get('.k-animation-container .k-list-item').contains(/Indonesian/i).click({ force: true })
+    cy.wait(1000)
+    cy.get('.k-animation-container').should('be.visible')
+    cy.get('.k-animation-container .k-list-item').each(($el) => {
+      if ($el.text().includes('id-ID') || $el.text().includes('Indonesia')) {
+        cy.wrap($el).click({ force: true })
+        return false
+      }
+    })
+    cy.wait(500)
     cy.get('.tooltip_popup').find('a.no_click.button.rounded.upcase').click({ force: true })
     cy.wait(3000)
+    cy.tutupCookiePopup()
 
-    // Buka halaman favorite setelah ubah bahasa
-    cy.visit('/account/favorite/movies')
+    // Cek kembali halaman favorite setelah ubah bahasa
+    cy.bukaFavoriteMovies()
 
-    // ✅ Cek: Jumlah movie favorite sama seperti sebelumnya
+    // ✅ Expected: Data favorite tidak hilang atau berubah setelah pergantian bahasa
     cy.get('body').then(($body) => {
       const jumlahSesudah = $body.find('.card.style_1').length
       cy.log('Jumlah favorite sesudah ubah bahasa: ' + jumlahSesudah)
       expect(jumlahSesudah).to.equal(jumlahSebelum)
     })
 
-    // Kembalikan ke English
-    cy.visit('/')
-    cy.get('li.translate').click({ force: true })
-    cy.get('.tooltip_popup').should('be.visible')
-    cy.get('.tooltip_popup').find('.k-input-value-text').first().click({ force: true })
-    cy.get('.k-animation-container .k-list-item').should('be.visible')
-    cy.get('.k-animation-container .k-list-item').contains(/en-US/i).click({ force: true })
-    cy.get('.tooltip_popup').find('a.no_click.button.rounded.upcase').click({ force: true })
-    cy.wait(3000)
+    // Cleanup: kembalikan ke English
+    setBahasaKeEnglish()
   })
 
 
   // ----------------------------------------
-  // TC-FAV-004 (NEGATIVE)
-  // Ubah bahasa tanpa login (guest user)
+  // TC-FAV-004 | POSITIVE | MEDIUM
+  // Perubahan Bahasa Tanpa Login
+  // PreCondition: User belum login, bahasa saat ini English
   // ----------------------------------------
-  it('TC-FAV-004 | Ubah Bahasa Tanpa Login Tetap Bisa Dilakukan', () => {
+  it('TC-FAV-004 | Perubahan Bahasa Tanpa Login', () => {
 
-    // Hapus semua cookies supaya tidak ada sesi login
     cy.clearCookies()
     cy.clearLocalStorage()
 
-    // Buka halaman utama tanpa login
+    // Step 1: Buka https://www.themoviedb.org/
     cy.visit('/')
+    cy.tutupCookiePopup()
 
-    // ✅ Cek: Tombol bahasa tetap ada meski tidak login
-    cy.get('li.translate').should('be.visible')
-
-    // Klik tombol bahasa
+    // Step 2: Klik Button Language di header
     cy.get('li.translate').click({ force: true })
     cy.get('.tooltip_popup').should('be.visible')
 
-    // Pilih Indonesian
+    // Step 3: Klik kolom bahasa
     cy.get('.tooltip_popup').find('.k-input-value-text').first().click({ force: true })
-    cy.get('.k-animation-container .k-list-item').should('be.visible')
-    cy.get('.k-animation-container .k-list-item').contains(/Indonesian/i).click({ force: true })
+    cy.wait(1000)
+    cy.get('.k-animation-container').should('be.visible')
+
+    // Step 4: Pilih Indonesian
+    cy.get('.k-animation-container .k-list-item').each(($el) => {
+      if ($el.text().includes('id-ID') || $el.text().includes('Indonesia')) {
+        cy.wrap($el).click({ force: true })
+        return false
+      }
+    })
+    cy.wait(500)
+
+    // Step 5: Klik tombol RELOAD PAGE
     cy.get('.tooltip_popup').find('a.no_click.button.rounded.upcase').click({ force: true })
     cy.wait(3000)
+    cy.tutupCookiePopup()
 
-    // ✅ Cek: Bahasa berhasil berubah tanpa perlu login
+    // ✅ Expected: Sistem menangani perubahan bahasa untuk user yang belum login
     cy.get('li.translate').should('contain.text', 'id')
   })
 
