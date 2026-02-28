@@ -1,15 +1,14 @@
-// =============================================
+
 // FILE: commands.js
 // FUNGSI: Berisi perintah custom yang bisa
 //         dipakai ulang di semua file test
-// =============================================
 
 
-// ------------------------------------------
+
 // COMMAND: login
 // FUNGSI: Login ke TMDb
 // CARA PAKAI: cy.login('username', 'password')
-// ------------------------------------------
+
 Cypress.Commands.add('login', (username, password) => {
 
   cy.session([username, password], () => {
@@ -39,22 +38,21 @@ Cypress.Commands.add('login', (username, password) => {
 })
 
 
-// ------------------------------------------
+
 // COMMAND: logout
 // FUNGSI: Logout dari TMDb
 // CARA PAKAI: cy.logout()
-// ------------------------------------------
+
 Cypress.Commands.add('logout', () => {
   cy.visit('/logout')
   cy.wait(1000)
 })
 
 
-// ------------------------------------------
 // COMMAND: tutupCookiePopup
 // FUNGSI: Tutup popup cookie consent jika muncul
 // CARA PAKAI: cy.tutupCookiePopup()
-// ------------------------------------------
+
 Cypress.Commands.add('tutupCookiePopup', () => {
   cy.get('body').then(($body) => {
     if ($body.find('button:contains("Allow All")').length > 0) {
@@ -70,13 +68,11 @@ Cypress.Commands.add('tutupCookiePopup', () => {
   })
 })
 
-
-// ------------------------------------------
 // COMMAND: bukaFavoriteMovies
 // FUNGSI: Navigasi langsung ke halaman Favorite Movies
 //         URL: /u/{username}/favorites
 // CARA PAKAI: cy.bukaFavoriteMovies()
-// ------------------------------------------
+
 Cypress.Commands.add('bukaFavoriteMovies', () => {
 
   // Ambil username dari testData.json lalu langsung visit URL-nya

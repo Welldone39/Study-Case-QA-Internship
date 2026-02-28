@@ -369,6 +369,8 @@ Beberapa hal yang perlu diperhatikan sebelum menjalankan automation test:
 
 6. **Cookie consent popup** — Handled otomatis oleh custom command `cy.tutupCookiePopup()` di `support/e2e.js`.
 
+6. **Bukti Bug Report dan Test Result** — Diharapkan untuk menggunakan kualitas 720p / 1080p.
+
 ---
 
 ## 📸 Screenshot & Test Result

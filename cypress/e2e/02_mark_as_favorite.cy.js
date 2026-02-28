@@ -22,7 +22,7 @@ describe('TMDb - Mark as Favorite', () => {
   it('TC-FAV-005 | Mark as Favorite dari Movie Detail Page', () => {
 
     cy.login(testData.validUser.username, testData.validUser.password)
-    cy.visit('/movie')
+    cy.visit('/')
     cy.tutupCookiePopup()
 
     // Klik movie pertama untuk masuk ke halaman detail
