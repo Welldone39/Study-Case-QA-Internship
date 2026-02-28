@@ -44,6 +44,10 @@ Project automation testing untuk fitur **Mark as Favorite** pada website [TMDb (
 
 **Actual Result:** Sorting kembali ke default, preference tidak tersimpan
 
+> 🔗 **[Bukti Dokumentasi](https://drive.google.com/file/d/1AdWGHb_58Ft1rxrr_hCjzFkOjQdLTYK5/view?usp=sharing)**
+
+
+
 **Saran ke Developer:**
 Simpan sorting preference di user settings/database agar persist antar sesi, bukan hanya di session storage browser.
 
@@ -53,7 +57,7 @@ Simpan sorting preference di user settings/database agar persist antar sesi, buk
 
 ### Untuk Developer
 1. **Sorting Persistence** — Sorting preference seharusnya disimpan di server/database per user, bukan hanya di browser session. Saat ini preference hilang setelah logout (TC-FAV-021 FAIL).
-2. **Ketersediaan Favorite Movie** — Untuk Melakukan Favorite Movie lebih bagus di tampilkan disetiap card di halaman utama website
+2. **Ketersediaan Favorite Movie** — Untuk Melakukan Favorite Movie lebih bagus di tampilkan di setiap card di halaman utama website
 3. **Pemberitahuan disesuaikan dengan bahasa yang digunakan** — peringatan tidak konsisten dan adanya 2 bahasa yang tercampur dalam satu peringatan
 
 ### Untuk UI/UX
@@ -369,9 +373,8 @@ Beberapa hal yang perlu diperhatikan sebelum menjalankan automation test:
 
 ## 📸 Screenshot & Test Result
 
-Dokumentasi hasil pengujian manual dapat dilihat di:
-> 📂 **[Folder `/docs/screenshots`](./docs/screenshots)** — Screenshot hasil setiap test case
-
+Dokumentasi hasil pengujian Automation dapat dilihat di:
+> 🔗 **[Hasil Pengujian Automation](https://drive.google.com/file/d/1H6DJDDASrEsLUlfHfObTxenTCXgXiTbb/view?usp=sharing)**
 ---
 
 *Dibuat oleh: **Wildan Mutasi Billah** | Study Case QA Intern - SimpliDOTS*
